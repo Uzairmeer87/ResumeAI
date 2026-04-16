@@ -1,0 +1,31 @@
+{
+  "name": "resume-ai-backend",
+  "version": "1.0.0",
+  "description": "REST API for uploading PDF resumes and extracting text content",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "resume",
+    "pdf",
+    "parser",
+    "express",
+    "api"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@huggingface/inference": "^4.13.15",
+    "axios": "^1.15.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.21.0",
+    "multer": "^1.4.5-lts.1",
+    "pdf-parse": "^1.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "pdfkit": "^0.18.0"
+  }
+}
