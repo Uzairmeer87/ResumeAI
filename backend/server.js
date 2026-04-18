@@ -15,6 +15,7 @@ const path = require("path");
 const pdfParse = require("pdf-parse");
 const { cleanResumeText } = require("./utils/textCleaner");
 const { analyzeResume } = require("./services/aiService");
+const { matchResumeToJob } = require("./utils/atsMatcher");
 
 // ------------------------------------------------------------
 // 1. Express App Setup
@@ -85,6 +86,7 @@ app.get("/", (_req, res) => {
     endpoints: {
       upload: "POST /upload — Upload a PDF resume for text extraction",
       analyze: "POST /analyze — AI-powered resume analysis (send { cleanText })",
+      match: "POST /match — ATS matching (send { resumeText, jobDescription })",
     },
   });
 });
@@ -124,7 +126,14 @@ app.post("/upload", upload.single("resume"), async (req, res) => {
     }
 
     console.error("PDF extraction error:", err.message);
-    return res.status(500).json({ error: "Failed to extract text from the PDF." });
+    
+    // Provide a clearer error message for corrupted/invalid PDFs
+    let errorMsg = "Failed to extract text from the PDF.";
+    if (err.message.includes("bad XRef entry") || err.message.includes("Invalid PDF structure")) {
+      errorMsg = "The uploaded PDF is corrupted or invalid. Please save your resume as a standard PDF and try again.";
+    }
+    
+    return res.status(500).json({ error: errorMsg, detail: err.message });
   }
 });
 
@@ -158,6 +167,40 @@ app.post("/analyze", async (req, res) => {
 
     return res.status(500).json({
       error: "AI analysis failed. The model may be loading — try again in 30 seconds.",
+      detail: err.message,
+    });
+  }
+});
+
+// POST /match — Compare resume against a job description (ATS scoring)
+app.post("/match", (req, res) => {
+  try {
+    const { resumeText, jobDescription } = req.body;
+
+    // --- Input validation ---
+    if (!resumeText || typeof resumeText !== "string" || resumeText.trim().length === 0) {
+      return res.status(400).json({
+        error: "'resumeText' is required and must be a non-empty string.",
+      });
+    }
+
+    if (!jobDescription || typeof jobDescription !== "string" || jobDescription.trim().length === 0) {
+      return res.status(400).json({
+        error: "'jobDescription' is required and must be a non-empty string.",
+      });
+    }
+
+    console.log("📊 Running ATS match analysis...");
+
+    const result = matchResumeToJob(resumeText, jobDescription);
+
+    console.log(`✅ ATS match complete — Score: ${result.matchScore}%`);
+
+    return res.status(200).json(result);
+  } catch (err) {
+    console.error("ATS match error:", err.message);
+    return res.status(500).json({
+      error: "ATS matching failed. Please try again.",
       detail: err.message,
     });
   }
