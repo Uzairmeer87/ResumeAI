@@ -7,37 +7,31 @@ import ATS from "./components/ATS";
 /* ── Navigation Link ── */
 function NavLink({ href, children, active }) {
   return (
-    <a
-      href={href}
-      className="relative text-sm font-medium transition-all duration-300 hover:drop-shadow-[0_0_6px_rgba(0,240,255,0.5)] py-1"
-      style={{ color: active ? "var(--color-neon-cyan)" : "var(--color-text-secondary)" }}
-      onMouseEnter={(e) => (e.target.style.color = "var(--color-neon-cyan)")}
-      onMouseLeave={(e) => (e.target.style.color = active ? "var(--color-neon-cyan)" : "var(--color-text-secondary)")}
-    >
+    <a href={href} className={`nav-link ${active ? "active" : ""}`}>
       {children}
     </a>
   );
 }
 
-/* ── Stat Card in Hero ── */
-function StatCard({ icon, value, label, delay }) {
+/* ── Feature Pill Card ── */
+function FeaturePill({ icon, title, subtitle, delay }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.5 }}
       whileHover={{ scale: 1.05, y: -4 }}
-      className="glass-card glass-card-hover p-5 text-center cursor-default transition-all duration-300"
+      className="feature-pill"
     >
-      <span className="text-2xl">{icon}</span>
+      <div className="pill-icon">{icon}</div>
       <p
-        className="text-lg font-bold mt-1.5 font-[family-name:var(--font-family-display)]"
+        className="text-sm font-bold font-[family-name:var(--font-family-display)]"
         style={{ color: "var(--color-neon-cyan)" }}
       >
-        {value}
+        {title}
       </p>
-      <p className="text-xs mt-0.5" style={{ color: "var(--color-text-muted)" }}>
-        {label}
+      <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>
+        {subtitle}
       </p>
     </motion.div>
   );
@@ -48,7 +42,6 @@ export default function App() {
 
   const handleUploadSuccess = (data) => {
     setUploadData(data);
-    // Smooth scroll to analysis section after render
     setTimeout(() => {
       document.getElementById("analysis")?.scrollIntoView({ behavior: "smooth" });
     }, 400);
@@ -57,33 +50,37 @@ export default function App() {
   const hasUpload = !!uploadData?.cleanText;
 
   return (
-    <div className="relative min-h-screen flex flex-col">
+    <div className="relative min-h-screen flex flex-col items-center overflow-x-hidden">
       {/* ── Ambient Orbs ── */}
       <div className="orb orb-1" />
       <div className="orb orb-2" />
       <div className="orb orb-3" />
 
-      {/* ── Sticky Navbar ── */}
+      {/* ── Sticky Glassmorphism Navbar ── */}
       <motion.nav
         initial={{ y: -80 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl"
+        className="fixed top-0 inset-x-0 z-50"
         style={{
-          background: "rgba(5, 8, 22, 0.8)",
-          borderBottom: "1px solid rgba(0, 240, 255, 0.08)",
+          background: "rgba(5, 8, 22, 0.75)",
+          backdropFilter: "blur(14px)",
+          WebkitBackdropFilter: "blur(14px)",
+          borderBottom: "1px solid rgba(255,255,255,0.06)",
         }}
       >
-        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div
               className="w-8 h-8 rounded-lg flex items-center justify-center"
               style={{
-                background: "rgba(0, 240, 255, 0.1)",
-                border: "1px solid rgba(0, 240, 255, 0.2)",
+                background: "rgba(0, 229, 255, 0.08)",
+                border: "1px solid rgba(0, 229, 255, 0.18)",
               }}
             >
-              <span className="text-sm">⚡</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+              </svg>
             </div>
             <span
               className="font-bold text-lg font-[family-name:var(--font-family-display)]"
@@ -100,19 +97,28 @@ export default function App() {
         </div>
       </motion.nav>
 
-      {/* ── Main Content ── */}
-      <main className="flex-1 pt-16">
+      {/* ── Main Content — Everything Centered ── */}
+      <main className="flex-1 w-full flex flex-col items-center pt-16">
         {/* ─── Hero Section ─── */}
-        <section className="relative flex flex-col items-center justify-center text-center px-6 py-24 md:py-32">
-          {/* Subtitle badge */}
+        <section className="relative w-full flex flex-col items-center text-center px-4 sm:px-6 pt-20 pb-16 sm:pt-28 sm:pb-20 md:pt-32 md:pb-24">
+          {/* Gradient mesh glow */}
+          <div
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] pointer-events-none"
+            style={{
+              background: "radial-gradient(ellipse at center, rgba(0,229,255,0.07) 0%, rgba(124,58,237,0.05) 35%, transparent 65%)",
+              filter: "blur(50px)",
+            }}
+          />
+
+          {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium mb-6"
+            className="relative inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium mb-8"
             style={{
-              background: "rgba(168, 85, 247, 0.1)",
-              border: "1px solid rgba(168, 85, 247, 0.25)",
+              background: "rgba(124, 58, 237, 0.08)",
+              border: "1px solid rgba(124, 58, 237, 0.2)",
               color: "var(--color-neon-purple)",
             }}
           >
@@ -132,18 +138,19 @@ export default function App() {
             AI-Powered Resume Intelligence
           </motion.div>
 
-          {/* Title */}
+          {/* ─── Main Heading ─── */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.7 }}
-            className="font-[family-name:var(--font-family-display)] font-extrabold text-4xl sm:text-5xl md:text-6xl leading-tight max-w-4xl"
+            className="relative font-[family-name:var(--font-family-display)] font-extrabold leading-tight max-w-4xl px-2 break-words"
+            style={{ fontSize: "clamp(2rem, 6vw, 3.75rem)" }}
           >
             Analyze Your Resume.{" "}
             <span
+              className="inline-block"
               style={{
-                background:
-                  "linear-gradient(135deg, var(--color-neon-cyan), var(--color-neon-purple), var(--color-neon-pink))",
+                background: "linear-gradient(135deg, #00e5ff, #7c3aed)",
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
                 WebkitTextFillColor: "transparent",
@@ -158,8 +165,11 @@ export default function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="mt-5 text-base sm:text-lg max-w-2xl leading-relaxed"
-            style={{ color: "var(--color-text-secondary)" }}
+            className="relative mt-5 max-w-2xl leading-relaxed px-2"
+            style={{
+              color: "var(--color-text-secondary)",
+              fontSize: "clamp(0.875rem, 2.5vw, 1.125rem)",
+            }}
           >
             Upload your resume, get AI-powered feedback, and compare it
             against any job description — all in seconds.
@@ -173,17 +183,47 @@ export default function App() {
             transition={{ delay: 0.6, duration: 0.5 }}
             whileHover={{ scale: 1.06 }}
             whileTap={{ scale: 0.97 }}
-            className="btn-neon mt-8"
-            style={{ fontSize: "1rem", padding: "0.9rem 2.5rem" }}
+            className="relative btn-cta-glow mt-10"
           >
-            Get Started →
+            GET STARTED →
           </motion.a>
 
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-4 sm:gap-5 mt-14 w-full max-w-md">
-            <StatCard icon="📄" value="PDF" label="Upload" delay={0.7} />
-            <StatCard icon="🤖" value="AI" label="Analysis" delay={0.8} />
-            <StatCard icon="🎯" value="ATS" label="Matching" delay={0.9} />
+          {/* Feature Pills */}
+          <div className="relative grid grid-cols-3 gap-3 sm:gap-5 mt-12 sm:mt-16 w-full max-w-xs sm:max-w-md md:max-w-lg mx-auto">
+            <FeaturePill
+              icon={
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                </svg>
+              }
+              title="PDF Upload"
+              subtitle="Drag & Drop"
+              delay={0.7}
+            />
+            <FeaturePill
+              icon={
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+              }
+              title="AI Analysis"
+              subtitle="Smart Insights"
+              delay={0.8}
+            />
+            <FeaturePill
+              icon={
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              }
+              title="ATS Matching"
+              subtitle="Score & Compare"
+              delay={0.9}
+            />
           </div>
 
           {/* Ping keyframe */}
@@ -194,11 +234,13 @@ export default function App() {
           `}</style>
         </section>
 
-        {/* ─── Functional Sections — Centered Container ─── */}
-        <div className="w-full max-w-5xl mx-auto px-6 pb-24">
-          <div className="space-y-12">
+        {/* ─── Functional Sections — max-w-6xl centered container ─── */}
+        <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-28">
+          <div className="flex flex-col items-center gap-10 sm:gap-14">
             {/* Upload */}
-            <Upload onUploadSuccess={handleUploadSuccess} />
+            <div className="w-full max-w-2xl">
+              <Upload onUploadSuccess={handleUploadSuccess} />
+            </div>
 
             {/* AI Analysis — revealed after upload */}
             <AnimatePresence>
@@ -209,6 +251,7 @@ export default function App() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.6 }}
+                  className="w-full max-w-4xl"
                 >
                   <Analysis cleanText={uploadData.cleanText} />
                 </motion.div>
@@ -224,6 +267,7 @@ export default function App() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.6, delay: 0.15 }}
+                  className="w-full max-w-4xl"
                 >
                   <ATS cleanText={uploadData.cleanText} />
                 </motion.div>
@@ -240,9 +284,9 @@ export default function App() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.6, delay: 0.3 }}
-                  className="w-full"
+                  className="w-full max-w-4xl"
                 >
-                  <div className="glass-card glass-card-hover p-8 md:p-10 transition-all duration-300">
+                  <div className="glass-card glass-card-hover p-6 sm:p-8 md:p-10 transition-all duration-300">
                     <div className="flex items-center gap-3 mb-6">
                       <div
                         className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
@@ -251,16 +295,7 @@ export default function App() {
                           border: "1px solid rgba(59, 130, 246, 0.15)",
                         }}
                       >
-                        <svg
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="var(--color-neon-blue)"
-                          strokeWidth="1.8"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-neon-blue)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                           <polyline points="14 2 14 8 20 8" />
                           <line x1="16" y1="13" x2="8" y2="13" />
@@ -269,24 +304,22 @@ export default function App() {
                         </svg>
                       </div>
                       <div>
-                        <h2 className="section-title" style={{ fontSize: "1.35rem" }}>
-                          Extracted Sections
-                        </h2>
+                        <h2 className="section-title">Extracted Sections</h2>
                         <p className="text-xs mt-0.5" style={{ color: "var(--color-text-muted)" }}>
                           Parsed from your resume
                         </p>
                       </div>
                     </div>
 
-                    <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {Object.entries(uploadData.sections).map(([key, value], i) => (
                         <motion.div
                           key={key}
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: 0.08 * i, duration: 0.4 }}
-                          whileHover={{ scale: 1.01, y: -1 }}
-                          className="glass-card glass-card-hover p-4 transition-all duration-300 cursor-default"
+                          whileHover={{ scale: 1.01, y: -2 }}
+                          className="glass-card glass-card-hover p-4 sm:p-5 transition-all duration-300 cursor-default break-words"
                         >
                           <h3
                             className="text-sm font-semibold mb-2 capitalize"
@@ -328,10 +361,10 @@ export default function App() {
 
         {/* ─── Footer ─── */}
         <footer
-          className="text-center py-8 text-xs"
+          className="w-full text-center py-8 px-4 text-xs"
           style={{
             color: "var(--color-text-muted)",
-            borderTop: "1px solid rgba(0, 240, 255, 0.06)",
+            borderTop: "1px solid rgba(255,255,255,0.04)",
           }}
         >
           <p>

@@ -79,7 +79,7 @@ function SkillBar({ matched, total }) {
       </div>
       <div
         className="h-2.5 rounded-full overflow-hidden"
-        style={{ background: "rgba(0, 240, 255, 0.06)" }}
+        style={{ background: "rgba(0, 229, 255, 0.06)" }}
       >
         <motion.div
           className="h-full rounded-full"
@@ -150,9 +150,7 @@ export default function ATS({ cleanText }) {
   const chipVariant = {
     hidden: { opacity: 0, scale: 0.7, y: 8 },
     visible: (i) => ({
-      opacity: 1,
-      scale: 1,
-      y: 0,
+      opacity: 1, scale: 1, y: 0,
       transition: { delay: i * 0.04, duration: 0.3, ease: "easeOut" },
     }),
   };
@@ -168,12 +166,12 @@ export default function ATS({ cleanText }) {
       transition={{ duration: 0.6 }}
       className="w-full"
     >
-      <div className="glass-card glass-card-hover p-8 md:p-10 transition-all duration-300">
+      <div className="glass-card glass-card-hover p-6 sm:p-8 md:p-10 transition-all duration-300">
         {/* Header */}
         <div className="flex items-center gap-3 mb-2">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: "rgba(0, 240, 255, 0.08)", border: "1px solid rgba(0, 240, 255, 0.15)" }}
+            style={{ background: "rgba(0, 229, 255, 0.06)", border: "1px solid rgba(0, 229, 255, 0.12)" }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-neon-cyan)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="8" />
@@ -181,7 +179,7 @@ export default function ATS({ cleanText }) {
             </svg>
           </div>
           <div>
-            <h2 className="section-title" style={{ fontSize: "1.35rem" }}>ATS Match Score</h2>
+            <h2 className="section-title">ATS Match Score</h2>
             <p className="text-xs mt-0.5" style={{ color: "var(--color-text-muted)" }}>
               Compare resume vs job description
             </p>
@@ -202,7 +200,8 @@ export default function ATS({ cleanText }) {
           placeholder="Paste the full job description here — the more detail, the better the match analysis..."
           value={jobDesc}
           onChange={(e) => setJobDesc(e.target.value)}
-          rows={6}
+          rows={5}
+          style={{ minHeight: "120px" }}
         />
 
         {/* Character counter */}
@@ -231,10 +230,10 @@ export default function ATS({ cleanText }) {
         ) : (
           <motion.button
             whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+            whileTap={{ scale: 0.95 }}
             onClick={handleMatch}
             disabled={loading || !jobDesc.trim()}
-            className="btn-neon w-full mt-5"
+            className="btn-neon w-full mt-5 py-3"
             id="match-btn"
           >
             🔍 Run ATS Match
@@ -259,69 +258,70 @@ export default function ATS({ cleanText }) {
                 />
               </div>
 
-              {/* Matched Skills */}
-              {result.matchedSkills?.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="glass-card p-5"
-                >
-                  <h3
-                    className="text-sm font-semibold mb-3 flex items-center gap-2"
-                    style={{ color: "var(--color-neon-green)" }}
+              {/* Matched + Missing Skills — 1 col mobile, 2 col md+ */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {result.matchedSkills?.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="glass-card p-5 sm:p-6"
                   >
-                    <span>✅</span> Matched Skills ({result.matchedSkills.length})
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {result.matchedSkills.map((skill, i) => (
-                      <motion.span
-                        key={skill}
-                        custom={i}
-                        initial="hidden"
-                        animate="visible"
-                        variants={chipVariant}
-                        whileHover={{ scale: 1.1, y: -2 }}
-                        className="skill-chip skill-chip-green cursor-default"
-                      >
-                        {skill}
-                      </motion.span>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
+                    <h3
+                      className="text-sm font-semibold mb-3 flex items-center gap-2"
+                      style={{ color: "var(--color-neon-green)" }}
+                    >
+                      <span>✅</span> Matched Skills ({result.matchedSkills.length})
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {result.matchedSkills.map((skill, i) => (
+                        <motion.span
+                          key={skill}
+                          custom={i}
+                          initial="hidden"
+                          animate="visible"
+                          variants={chipVariant}
+                          whileHover={{ scale: 1.1, y: -2 }}
+                          className="skill-chip skill-chip-green cursor-default"
+                        >
+                          {skill}
+                        </motion.span>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
 
-              {/* Missing Skills */}
-              {result.missingSkills?.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="glass-card p-5"
-                >
-                  <h3
-                    className="text-sm font-semibold mb-3 flex items-center gap-2"
-                    style={{ color: "var(--color-neon-red)" }}
+                {result.missingSkills?.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="glass-card p-5 sm:p-6"
                   >
-                    <span>❌</span> Missing Skills ({result.missingSkills.length})
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {result.missingSkills.map((skill, i) => (
-                      <motion.span
-                        key={skill}
-                        custom={i}
-                        initial="hidden"
-                        animate="visible"
-                        variants={chipVariant}
-                        whileHover={{ scale: 1.1, y: -2 }}
-                        className="skill-chip skill-chip-red cursor-default"
-                      >
-                        {skill}
-                      </motion.span>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
+                    <h3
+                      className="text-sm font-semibold mb-3 flex items-center gap-2"
+                      style={{ color: "var(--color-neon-red)" }}
+                    >
+                      <span>❌</span> Missing Skills ({result.missingSkills.length})
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {result.missingSkills.map((skill, i) => (
+                        <motion.span
+                          key={skill}
+                          custom={i}
+                          initial="hidden"
+                          animate="visible"
+                          variants={chipVariant}
+                          whileHover={{ scale: 1.1, y: -2 }}
+                          className="skill-chip skill-chip-red cursor-default"
+                        >
+                          {skill}
+                        </motion.span>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </div>
 
               {/* Recommendations */}
               {result.recommendations && (
@@ -329,7 +329,7 @@ export default function ATS({ cleanText }) {
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.7 }}
-                  className="glass-card p-5"
+                  className="glass-card p-5 sm:p-6"
                   style={{
                     borderLeftWidth: "3px",
                     borderLeftStyle: "solid",
@@ -342,7 +342,7 @@ export default function ATS({ cleanText }) {
                       Recommendations
                     </h3>
                   </div>
-                  <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
+                  <p className="text-sm leading-relaxed break-words" style={{ color: "var(--color-text-secondary)" }}>
                     {result.recommendations}
                   </p>
                 </motion.div>
@@ -351,10 +351,10 @@ export default function ATS({ cleanText }) {
               {/* Re-run */}
               <motion.button
                 whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={handleMatch}
                 disabled={loading}
-                className="btn-neon w-full"
+                className="btn-neon w-full py-3"
               >
                 🔄 Re-Run Match
               </motion.button>

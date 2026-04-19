@@ -83,9 +83,7 @@ export default function Analysis({ cleanText }) {
   const cardVariants = {
     hidden: { opacity: 0, y: 24, scale: 0.97 },
     visible: (i) => ({
-      opacity: 1,
-      y: 0,
-      scale: 1,
+      opacity: 1, y: 0, scale: 1,
       transition: { delay: i * 0.12, duration: 0.5, ease: "easeOut" },
     }),
   };
@@ -99,12 +97,12 @@ export default function Analysis({ cleanText }) {
       transition={{ duration: 0.6 }}
       className="w-full"
     >
-      <div className="glass-card glass-card-hover p-8 md:p-10 transition-all duration-300">
+      <div className="glass-card glass-card-hover p-6 sm:p-8 md:p-10 transition-all duration-300">
         {/* Header */}
         <div className="flex items-center gap-3 mb-2">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: "rgba(168, 85, 247, 0.08)", border: "1px solid rgba(168, 85, 247, 0.15)" }}
+            style={{ background: "rgba(168, 85, 247, 0.06)", border: "1px solid rgba(168, 85, 247, 0.12)" }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-neon-purple)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="10" />
@@ -113,7 +111,7 @@ export default function Analysis({ cleanText }) {
             </svg>
           </div>
           <div>
-            <h2 className="section-title" style={{ fontSize: "1.35rem" }}>AI-Powered Analysis</h2>
+            <h2 className="section-title">AI-Powered Analysis</h2>
             <p className="text-xs mt-0.5" style={{ color: "var(--color-text-muted)" }}>
               Strengths, weaknesses & actionable suggestions
             </p>
@@ -124,10 +122,10 @@ export default function Analysis({ cleanText }) {
         {!result && !loading && (
           <motion.button
             whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+            whileTap={{ scale: 0.95 }}
             onClick={handleAnalyze}
             disabled={loading}
-            className="btn-neon btn-neon-purple w-full mt-6"
+            className="btn-neon btn-neon-purple w-full mt-6 py-3"
             id="analyze-btn"
           >
             ✨ Analyze Resume with AI
@@ -159,7 +157,7 @@ export default function Analysis({ cleanText }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4 }}
-              className="mt-6 space-y-4"
+              className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4"
             >
               {sections.map((section, i) => (
                 <motion.div
@@ -168,8 +166,8 @@ export default function Analysis({ cleanText }) {
                   initial="hidden"
                   animate="visible"
                   variants={cardVariants}
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  className="glass-card glass-card-hover p-5 transition-all duration-300 cursor-default"
+                  whileHover={{ scale: 1.01, y: -3 }}
+                  className="glass-card glass-card-hover p-5 sm:p-6 transition-all duration-300 cursor-default break-words"
                   style={{
                     borderLeftWidth: "3px",
                     borderLeftStyle: "solid",
@@ -178,10 +176,7 @@ export default function Analysis({ cleanText }) {
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-lg">{section.icon}</span>
-                    <h3
-                      className="font-semibold text-base"
-                      style={{ color: section.color }}
-                    >
+                    <h3 className="font-semibold text-base" style={{ color: section.color }}>
                       {section.label}
                     </h3>
                   </div>
@@ -201,13 +196,13 @@ export default function Analysis({ cleanText }) {
                 </motion.div>
               ))}
 
-              {/* Re-analyze button */}
+              {/* Re-analyze button — spans full width below the grid */}
               <motion.button
                 whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={handleAnalyze}
                 disabled={loading}
-                className="btn-neon btn-neon-purple w-full mt-2"
+                className="btn-neon btn-neon-purple w-full py-3 md:col-span-2"
               >
                 🔄 Re-Analyze
               </motion.button>

@@ -103,12 +103,12 @@ export default function Upload({ onUploadSuccess }) {
       transition={{ duration: 0.6 }}
       className="w-full"
     >
-      <div className="glass-card glass-card-hover p-8 md:p-10 transition-all duration-300">
+      <div className="glass-card glass-card-hover p-6 sm:p-8 md:p-10 transition-all duration-300">
         {/* Title */}
         <div className="flex items-center gap-3 mb-6">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: "rgba(0, 240, 255, 0.08)", border: "1px solid rgba(0, 240, 255, 0.15)" }}
+            style={{ background: "rgba(0, 229, 255, 0.06)", border: "1px solid rgba(0, 229, 255, 0.12)" }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-neon-cyan)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -118,7 +118,7 @@ export default function Upload({ onUploadSuccess }) {
             </svg>
           </div>
           <div>
-            <h2 className="section-title" style={{ fontSize: "1.35rem" }}>Upload Your Resume</h2>
+            <h2 className="section-title">Upload Your Resume</h2>
             <p className="text-xs mt-0.5" style={{ color: "var(--color-text-muted)" }}>PDF format • Max 10 MB</p>
           </div>
         </div>
@@ -141,24 +141,9 @@ export default function Upload({ onUploadSuccess }) {
             id="resume-file-input"
           />
 
-          {/* Upload Icon */}
-          <div
-            className="w-16 h-16 rounded-full flex items-center justify-center"
-            style={{
-              background: "rgba(0, 240, 255, 0.06)",
-              border: "1px solid rgba(0, 240, 255, 0.15)",
-            }}
-          >
-            <svg
-              width="28"
-              height="28"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="var(--color-neon-cyan)"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
+          {/* Upload Icon Ring */}
+          <div className="upload-icon-ring">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-neon-cyan)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
               <polyline points="17 8 12 3 7 8" />
               <line x1="12" y1="3" x2="12" y2="15" />
@@ -166,13 +151,15 @@ export default function Upload({ onUploadSuccess }) {
           </div>
 
           <div className="text-center">
-            <p className="font-medium" style={{ color: "var(--color-text-primary)" }}>
+            <p className="font-semibold text-sm sm:text-base" style={{ color: "var(--color-text-primary)" }}>
               Drag & drop your resume here
             </p>
             <p className="text-sm mt-1" style={{ color: "var(--color-text-muted)" }}>
               or click to browse
             </p>
           </div>
+
+          <span className="constraint-badge">PDF • Max 10MB</span>
         </div>
 
         {/* Selected file info */}
@@ -185,19 +172,19 @@ export default function Upload({ onUploadSuccess }) {
               transition={{ duration: 0.3 }}
               className="mt-4 flex items-center justify-between gap-3 px-4 py-3 rounded-xl"
               style={{
-                background: "rgba(0, 240, 255, 0.04)",
-                border: "1px solid rgba(0, 240, 255, 0.12)",
+                background: "rgba(0, 229, 255, 0.03)",
+                border: "1px solid rgba(0, 229, 255, 0.1)",
               }}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div
                   className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
-                  style={{ background: "rgba(0, 240, 255, 0.08)" }}
+                  style={{ background: "rgba(0, 229, 255, 0.06)" }}
                 >
                   <span className="text-sm">📎</span>
                 </div>
                 <div className="min-w-0">
-                  <p className="text-sm font-medium truncate">{file.name}</p>
+                  <p className="text-sm font-medium break-all line-clamp-1">{file.name}</p>
                   <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>
                     {formatSize(file.size)}
                   </p>
@@ -211,11 +198,11 @@ export default function Upload({ onUploadSuccess }) {
                   setError("");
                   if (inputRef.current) inputRef.current.value = "";
                 }}
-                className="text-xs px-3 py-1.5 rounded-lg transition-all duration-200 hover:scale-105"
+                className="text-xs px-3 py-1.5 rounded-lg transition-all duration-200 hover:scale-105 shrink-0"
                 style={{
                   color: "var(--color-neon-red)",
-                  background: "rgba(239, 68, 68, 0.08)",
-                  border: "1px solid rgba(239, 68, 68, 0.2)",
+                  background: "rgba(239, 68, 68, 0.06)",
+                  border: "1px solid rgba(239, 68, 68, 0.15)",
                 }}
               >
                 Remove
@@ -260,10 +247,10 @@ export default function Upload({ onUploadSuccess }) {
         ) : (
           <motion.button
             whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+            whileTap={{ scale: 0.95 }}
             onClick={handleUpload}
             disabled={!file || loading}
-            className="btn-neon w-full mt-6"
+            className="btn-gradient mt-6"
             id="upload-btn"
           >
             🚀 Upload & Extract
