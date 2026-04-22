@@ -534,6 +534,48 @@ body::after {
   font-size: 0.88rem;
 }
 
+/* ─────────────────────────────────────
+   3D Hero Canvas
+   ───────────────────────────────────── */
+.hero-canvas-container {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-canvas-container canvas {
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.hero-canvas-container canvas:active {
+  cursor: grabbing;
+}
+
+/* Ensure hero text floats above the 3D canvas */
+.hero-content-overlay {
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Scanline overlay for sci-fi look ─── */
+.hero-scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 229, 255, 0.012) 2px,
+    rgba(0, 229, 255, 0.012) 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
 /* ─── Floating animation for cards ─── */
 @keyframes subtle-float {
   0%, 100% { transform: translateY(0); }

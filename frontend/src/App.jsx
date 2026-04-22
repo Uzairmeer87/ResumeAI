@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Upload from "./components/Upload";
 import Analysis from "./components/Analysis";
 import ATS from "./components/ATS";
+import HeroCanvas from "./components/HeroCanvas";
 
 /* ── Navigation Link ── */
 function NavLink({ href, children, active }) {
@@ -100,22 +101,26 @@ export default function App() {
       {/* ── Main Content — Everything Centered ── */}
       <main className="flex-1 w-full flex flex-col items-center pt-16">
         {/* ─── Hero Section ─── */}
-        <section className="relative w-full flex flex-col items-center text-center px-4 sm:px-6 pt-20 pb-16 sm:pt-28 sm:pb-20 md:pt-32 md:pb-24">
+        <section className="relative w-full min-h-[85vh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-16 pb-16 sm:pt-24 sm:pb-20 md:pt-28 md:pb-24 hero-scanlines overflow-hidden">
+          {/* 3D Holographic Canvas — renders behind text */}
+          <HeroCanvas />
+
           {/* Gradient mesh glow */}
           <div
             className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] pointer-events-none"
             style={{
               background: "radial-gradient(ellipse at center, rgba(0,229,255,0.07) 0%, rgba(124,58,237,0.05) 35%, transparent 65%)",
               filter: "blur(50px)",
+              zIndex: 0,
             }}
           />
 
-          {/* Badge */}
+          {/* Badge — hero-content-overlay keeps text above 3D canvas */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.5 }}
-            className="relative inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium mb-8"
+            className="hero-content-overlay inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium mb-8"
             style={{
               background: "rgba(124, 58, 237, 0.08)",
               border: "1px solid rgba(124, 58, 237, 0.2)",
@@ -143,7 +148,7 @@ export default function App() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.7 }}
-            className="relative font-[family-name:var(--font-family-display)] font-extrabold leading-tight max-w-4xl px-2 break-words"
+            className="hero-content-overlay font-[family-name:var(--font-family-display)] font-extrabold leading-tight max-w-4xl px-2 break-words"
             style={{ fontSize: "clamp(2rem, 6vw, 3.75rem)" }}
           >
             Analyze Your Resume.{" "}
@@ -165,7 +170,7 @@ export default function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="relative mt-5 max-w-2xl leading-relaxed px-2"
+            className="hero-content-overlay mt-5 max-w-2xl leading-relaxed px-2"
             style={{
               color: "var(--color-text-secondary)",
               fontSize: "clamp(0.875rem, 2.5vw, 1.125rem)",
@@ -183,13 +188,13 @@ export default function App() {
             transition={{ delay: 0.6, duration: 0.5 }}
             whileHover={{ scale: 1.06 }}
             whileTap={{ scale: 0.97 }}
-            className="relative btn-cta-glow mt-10"
+            className="hero-content-overlay btn-cta-glow mt-10"
           >
             GET STARTED →
           </motion.a>
 
           {/* Feature Pills */}
-          <div className="relative grid grid-cols-3 gap-3 sm:gap-5 mt-12 sm:mt-16 w-full max-w-xs sm:max-w-md md:max-w-lg mx-auto">
+          <div className="hero-content-overlay grid grid-cols-3 gap-3 sm:gap-5 mt-12 sm:mt-16 w-full max-w-xs sm:max-w-md md:max-w-lg mx-auto">
             <FeaturePill
               icon={
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
