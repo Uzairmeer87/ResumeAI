@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Loader from "./Loader";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
 
 const SECTION_META = {
   summary:     { icon: "📋", label: "Summary",     color: "var(--color-neon-cyan)"   },
